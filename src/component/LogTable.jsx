@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import {
 	Table,
@@ -17,6 +17,8 @@ import {
 	IconButton,
 	FormControlLabel,
 	Switch,
+	RadioGroup,
+	Radio,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
@@ -43,6 +45,13 @@ const LogTable = ({ logData, tableHeaders }) => {
 	const [selectedColumns, setSelectedColumns] = useState(tableHeaders);
 	const [columnOrder, setColumnOrder] = useState(tableHeaders);
 	const [deactivatedColumns, setDeactivatedColumns] = useState([]);
+	const [sortColumn, setSortColumn] = useState(""); // Added state for sorting column
+	const [sortDirection, setSortDirection] = useState("asc");
+	const [originalData, setOriginalData] = useState([]);
+
+	useEffect(() => {
+		setOriginalData([...logData]);
+	}, [logData]);
 
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
@@ -85,6 +94,35 @@ const LogTable = ({ logData, tableHeaders }) => {
 		setColumnOrder(tableHeaders);
 		setDeactivatedColumns([]);
 		handleClose();
+	};
+
+	const handleSorting = () => {
+		if (sortColumn) {
+			// Sorting logic based on the selected column
+			const sortedData = logData.sort((a, b) =>
+				sortDirection === "asc"
+					? a[sortColumn].localeCompare(b[sortColumn])
+					: b[sortColumn].localeCompare(a[sortColumn])
+			);
+			// Update logData with the sorted data
+			// setLogData(sortedData);
+			handleClose2();
+		} else {
+			// Handle case where no sorting column is selected
+			console.warn("Please select a column for sorting");
+		}
+	};
+
+	const handleResetSorting = () => {
+		// Reset sorting to initial state
+		setSortDirection("asc");
+		setSortColumn("");
+		handleClose2();
+
+		// Restore the original order of data
+		const originalData = logData.slice().sort((a, b) => a.id - b.id);
+		// Update logData with the original order
+		// setLogData(originalData);
 	};
 
 	const filteredData = logData
@@ -206,21 +244,51 @@ const LogTable = ({ logData, tableHeaders }) => {
 									<div
 										style={{
 											display: "flex",
+											flexDirection: "column",
 											gap: "14px",
 											justifyContent: "center",
 											marginTop: "20px",
 										}}
 									>
-										<Button
-											variant="contained"
-											color="inherit"
-											onClick={handleClose2}
+										{/* Display checkboxes for each column */}
+										<RadioGroup
+											aria-label="sorting-columns"
+											name="sorting-columns"
+											value={sortColumn}
+											onChange={e => setSortColumn(e.target.value)}
 										>
-											Reset
-										</Button>
-										<Button variant="contained" color="primary">
-											Up
-										</Button>
+											{/* Display radio buttons for each column */}
+											{tableHeaders.map(header => (
+												<FormControlLabel
+													key={header}
+													value={header}
+													control={<Radio />}
+													label={header}
+												/>
+											))}
+										</RadioGroup>
+										<div
+											style={{
+												marginTop: "10px",
+												display: "flex",
+												justifyContent: "center",
+											}}
+										>
+											<Button
+												variant="contained"
+												color="inherit"
+												onClick={handleResetSorting}
+											>
+												Reset
+											</Button>
+											<Button
+												variant="contained"
+												color="primary"
+												onClick={handleSorting}
+											>
+												{sortDirection === "asc" ? "Up" : "Down"}
+											</Button>
+										</div>
 									</div>
 								</Box>
 							</Modal>
