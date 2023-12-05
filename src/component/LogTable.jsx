@@ -15,10 +15,12 @@ import {
 	Modal,
 	Box,
 	IconButton,
+	FormControlLabel,
+	Switch,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import AlignVerticalCenterIcon from '@mui/icons-material/AlignVerticalCenter';
+import AlignVerticalCenterIcon from "@mui/icons-material/AlignVerticalCenter";
 
 const style = {
 	position: "absolute",
@@ -38,6 +40,10 @@ const LogTable = ({ logData, tableHeaders }) => {
 	const [searchTerm, setSearchTerm] = useState("");
 
 	const [open, setOpen] = React.useState(false);
+	const [selectedColumns, setSelectedColumns] = useState(tableHeaders);
+	const [columnOrder, setColumnOrder] = useState(tableHeaders);
+	const [deactivatedColumns, setDeactivatedColumns] = useState([]);
+
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
 
@@ -54,12 +60,47 @@ const LogTable = ({ logData, tableHeaders }) => {
 		setPage(0);
 	};
 
-	const filteredData = logData.filter(log =>
-		Object.values(log).some(
-			value =>
-				typeof value === "string" && value.toLowerCase().includes(searchTerm)
+	const handleUpButtonClick = () => {
+		// Set the column order to only include selected columns
+		const selectedColumnsOrder = tableHeaders.filter(col =>
+			selectedColumns.includes(col)
+		);
+		setColumnOrder(selectedColumnsOrder);
+		handleClose();
+	};
+
+	const handleColumnToggle = column => {
+		if (selectedColumns.includes(column)) {
+			setSelectedColumns(selectedColumns.filter(col => col !== column));
+			setDeactivatedColumns(prev => [...prev, column]);
+		} else {
+			setSelectedColumns([...selectedColumns, column]);
+			setDeactivatedColumns(prev => prev.filter(col => col !== column));
+		}
+	};
+
+	const handleReset = () => {
+		// Reset the selected columns and column order to initial state
+		setSelectedColumns(tableHeaders);
+		setColumnOrder(tableHeaders);
+		setDeactivatedColumns([]);
+		handleClose();
+	};
+
+	const filteredData = logData
+		.filter(log =>
+			Object.values(log).some(
+				value =>
+					typeof value === "string" && value.toLowerCase().includes(searchTerm)
+			)
 		)
-	);
+		.map(log => {
+			const filteredLog = {};
+			columnOrder.forEach(header => {
+				filteredLog[header] = log[header];
+			});
+			return filteredLog;
+		});
 
 	return (
 		<Paper style={{ padding: "20px" }}>
@@ -96,21 +137,41 @@ const LogTable = ({ logData, tableHeaders }) => {
 									<div
 										style={{
 											display: "flex",
+											flexDirection: "column",
 											gap: "14px",
-											justifyContent: "center",
+											alignItems: "center",
 											marginTop: "20px",
 										}}
 									>
-										<Button
-											variant="contained"
-											color="inherit"
-											onClick={handleClose}
-										>
-											Reset
-										</Button>
-										<Button variant="contained" color="primary">
-											Up
-										</Button>
+										{tableHeaders.map(header => (
+											<FormControlLabel
+												key={header}
+												control={
+													<Switch
+														checked={selectedColumns.includes(header)}
+														onChange={() => handleColumnToggle(header)}
+														color="primary"
+													/>
+												}
+												label={header}
+											/>
+										))}
+										<div style={{ marginTop: "20px", gap: "10px" }}>
+											<Button
+												variant="contained"
+												color="inherit"
+												onClick={handleReset}
+											>
+												Reset
+											</Button>
+											<Button
+												variant="contained"
+												color="primary"
+												onClick={handleUpButtonClick}
+											>
+												Up
+											</Button>
+										</div>
 									</div>
 								</Box>
 							</Modal>
@@ -180,7 +241,7 @@ const LogTable = ({ logData, tableHeaders }) => {
 			<Table>
 				<TableHead>
 					<TableRow>
-						{tableHeaders.map(header => (
+						{columnOrder.map(header => (
 							<TableCell key={header}>{header}</TableCell>
 						))}
 					</TableRow>
@@ -190,7 +251,7 @@ const LogTable = ({ logData, tableHeaders }) => {
 						.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 						.map((log, index) => (
 							<TableRow key={index}>
-								{tableHeaders.map(header => (
+								{columnOrder.map(header => (
 									<TableCell key={header}>
 										{header === "level" ? (
 											<LogLevelText level={log[header]} />
