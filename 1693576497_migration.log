@@ -1,0 +1,6 @@
+{"level":"info","$":"MAIN","from":-1,"to":2,"client_count":1,"type":"","time":"2023-09-01T21:54:57+08:00","message":"Starting migration"}
+{"level":"info","$":"MAIN","client":"statistic","time":"2023-09-01T21:54:57+08:00","message":"Client registered to worker pool"}
+{"level":"debug","$":"WORKER","client":"statistic","schema_start_version":2,"start_from":2,"end":2,"client":"statistic","time":"2023-09-01T21:54:57+08:00","message":"Migrating client..."}
+{"level":"debug","$":"WORKER","client":"statistic","schema_start_version":2,"start_from":2,"end":2,"dir_version":2,"dir_name":"2_add_population_table_down.sql","time":"2023-09-01T21:54:57+08:00","message":"executing directive version 2"}
+{"level":"debug","$":"WORKER","client":"statistic","schema_start_version":2,"start_from":2,"end":2,"dir_version":2,"dir_name":"2_add_population_table_down.sql","time":"2023-09-01T21:54:57+08:00","message":"finished executing directive version 2"}
+{"level":"info","$":"WORKER","client":"statistic","schema_start_version":2,"start_from":2,"end":2,"client":"statistic","time":"2023-09-01T21:54:57+08:00","message":"Finished rollback client"}

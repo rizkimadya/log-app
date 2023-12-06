@@ -1,0 +1,16 @@
+{"level":"info","$":"MAIN","from":-1,"to":18,"client_count":5,"type":"","time":"2023-09-01T21:37:15+08:00","message":"Starting migration"}
+{"level":"info","$":"MAIN","client":"11_08_03_2039","time":"2023-09-01T21:37:15+08:00","message":"Client registered to worker pool"}
+{"level":"info","$":"MAIN","client":"11_17_05_2006","time":"2023-09-01T21:37:15+08:00","message":"Client registered to worker pool"}
+{"level":"info","$":"MAIN","client":"12_05_01_2014","time":"2023-09-01T21:37:15+08:00","message":"Client registered to worker pool"}
+{"level":"info","$":"MAIN","client":"73_11_02_2006","time":"2023-09-01T21:37:15+08:00","message":"Client registered to worker pool"}
+{"level":"info","$":"MAIN","client":"99_99_99_9999","time":"2023-09-01T21:37:15+08:00","message":"Client registered to worker pool"}
+{"level":"trace","$":"WORKER","client":"11_17_05_2006","time":"2023-09-01T21:37:15+08:00","message":"Since current version (18) >= from (-1), using current version as starting point"}
+{"level":"trace","$":"WORKER","client":"11_17_05_2006","time":"2023-09-01T21:37:15+08:00","message":"Current version is up-to-date, skipped"}
+{"level":"trace","$":"WORKER","client":"12_05_01_2014","time":"2023-09-01T21:37:15+08:00","message":"Since current version (18) >= from (-1), using current version as starting point"}
+{"level":"trace","$":"WORKER","client":"73_11_02_2006","time":"2023-09-01T21:37:15+08:00","message":"Since current version (18) >= from (-1), using current version as starting point"}
+{"level":"trace","$":"WORKER","client":"11_08_03_2039","time":"2023-09-01T21:37:15+08:00","message":"Since current version (18) >= from (-1), using current version as starting point"}
+{"level":"trace","$":"WORKER","client":"12_05_01_2014","time":"2023-09-01T21:37:15+08:00","message":"Current version is up-to-date, skipped"}
+{"level":"trace","$":"WORKER","client":"99_99_99_9999","time":"2023-09-01T21:37:15+08:00","message":"Since current version (18) >= from (-1), using current version as starting point"}
+{"level":"trace","$":"WORKER","client":"73_11_02_2006","time":"2023-09-01T21:37:15+08:00","message":"Current version is up-to-date, skipped"}
+{"level":"trace","$":"WORKER","client":"11_08_03_2039","time":"2023-09-01T21:37:15+08:00","message":"Current version is up-to-date, skipped"}
+{"level":"trace","$":"WORKER","client":"99_99_99_9999","time":"2023-09-01T21:37:15+08:00","message":"Current version is up-to-date, skipped"}
